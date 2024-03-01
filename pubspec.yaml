@@ -1,6 +1,6 @@
 name: native_screenshot_widget
 description: "A Flutter plugin to take screenshot(support Platform Views) for Android and iOS with native code."
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/kecson/native_screenshot_widget
 
 environment:
