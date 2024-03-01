@@ -33,16 +33,20 @@ class NativeScreenshot extends SingleChildRenderObjectWidget {
 }
 
 class NativeScreenshotController {
-
   RenderBox? _renderObject;
   double _devicePixelRatio = 1.0;
 
   Future<Uint8List?> takeScreenshot() async {
-    if (_renderObject == null || _renderObject?.hasSize != true) return null;
+    if (_renderObject == null ||
+        _renderObject?.hasSize != true ||
+        _renderObject?.attached != true) {
+      return null;
+    }
+
+    final offset = _renderObject!.localToGlobal(Offset.zero);
+    final size = _renderObject!.size;
     return FfNativeScreenshot().takeScreenshot().then((bytes) async {
       if (bytes != null) {
-        final offset = _renderObject!.localToGlobal(Offset.zero);
-        final size = _renderObject!.size;
         final image = await decodeImageFromList(bytes);
         final dst = Rect.fromLTWH(
           0,
