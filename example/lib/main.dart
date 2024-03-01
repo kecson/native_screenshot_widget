@@ -101,12 +101,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const SizedBox(height: 24),
-                      NativeScreenshot(
-                        controller: flutterWidgetScreenshotController,
-                        child: Text(
-                          "Flutter Widget",
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
+                      Text(
+                        "Flutter Widget",
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                       Container(
                         width: 100,
