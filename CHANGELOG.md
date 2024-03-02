@@ -1,7 +1,11 @@
+## 0.0.5
+
+* Update scale takeScreenshot
+
 ## 0.0.4
 
 * Add takeScreenshotImage
-* Support scale Screenshot,
+* Support scale Screenshot
 
 ## 0.0.3
 

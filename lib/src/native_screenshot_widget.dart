@@ -56,8 +56,8 @@ class NativeScreenshotController {
         final dst = Rect.fromLTWH(
           0,
           0,
-          size.width * _devicePixelRatio,
-          size.height * _devicePixelRatio,
+          size.width * _devicePixelRatio * scale,
+          size.height * _devicePixelRatio * scale,
         );
         final src = Rect.fromLTWH(
           offset.dx * _devicePixelRatio,
@@ -69,11 +69,10 @@ class NativeScreenshotController {
         final canvas = Canvas(pictureRecorder, dst);
         canvas.drawImageRect(image, src, dst, Paint());
         final renderObjectImage = pictureRecorder.endRecording().toImageSync(
-              src.width.toInt(),
-              src.height.toInt(),
+              dst.width.toInt(),
+              dst.height.toInt(),
             );
-        final screenshot = await renderObjectImage.scaleImage(scale);
-        return screenshot;
+        return renderObjectImage;
       }
 
       return null;
