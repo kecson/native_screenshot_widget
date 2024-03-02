@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'NativeScreenshot Demo Home Page'),
+      home: const MyHomePage(title: 'NativeScreenshot'),
     );
   }
 }
@@ -130,16 +130,49 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _takeScreenshot(
-      String type, NativeScreenshotController screenshotController) async {
-    final bytes = await screenshotController.takeScreenshot();
-    if (bytes?.isNotEmpty ?? false) {
+    String type,
+    NativeScreenshotController screenshotController,
+  ) async {
+    final list = (await Future.wait([
+      1.0,
+      0.5,
+      0.1,
+    ].map((scale) async {
+      final bytes = await screenshotController.takeScreenshot(scale: scale);
+      return MapEntry('Scale $scale', bytes);
+    })))
+        .where((e) => e.value != null);
+
+    if (list.isNotEmpty) {
       showDialog(
         context: context,
         builder: (c) => AlertDialog(
           title: Text('Screenshot-$type'),
-          content: Image.memory(
-            bytes!,
-            fit: BoxFit.contain,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (var i = 0; i < list.length; i++)
+                Flexible(
+                  child: Container(
+                    margin: EdgeInsets.only(top: i > 0 ? 16 : 0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(list.elementAt(i).key),
+                        Flexible(
+                          child: Image.memory(
+                            list.elementAt(i).value!,
+                            alignment: Alignment.center,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
           ),
         ),
       );

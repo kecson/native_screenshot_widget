@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:ff_native_screenshot/ff_native_screenshot.dart';
 import 'package:flutter/rendering.dart';
@@ -36,7 +36,12 @@ class NativeScreenshotController {
   RenderBox? _renderObject;
   double _devicePixelRatio = 1.0;
 
-  Future<Uint8List?> takeScreenshot() async {
+  Future<Uint8List?> takeScreenshot({double scale = 1.0}) {
+    return takeScreenshotImage(scale: scale)
+        .then((image) => image?.toPngBytes());
+  }
+
+  Future<ui.Image?> takeScreenshotImage({double scale = 1.0}) async {
     if (_renderObject == null ||
         _renderObject?.hasSize != true ||
         _renderObject?.attached != true) {
@@ -60,20 +65,39 @@ class NativeScreenshotController {
           size.width * _devicePixelRatio,
           size.height * _devicePixelRatio,
         );
-        final PictureRecorder pictureRecorder = PictureRecorder();
-        final Canvas canvas = Canvas(pictureRecorder, dst);
+        final pictureRecorder = ui.PictureRecorder();
+        final canvas = Canvas(pictureRecorder, dst);
         canvas.drawImageRect(image, src, dst, Paint());
-        final clipImage = pictureRecorder.endRecording().toImageSync(
+        final renderObjectImage = pictureRecorder.endRecording().toImageSync(
               src.width.toInt(),
               src.height.toInt(),
             );
-
-        return clipImage
-            .toByteData(format: ImageByteFormat.png)
-            .then((value) => value?.buffer.asUint8List());
+        final screenshot = await renderObjectImage.scaleImage(scale);
+        return screenshot;
       }
 
       return null;
     });
+  }
+}
+
+extension NativeScreenshotImageScale on ui.Image {
+  Future<ui.Image?> scaleImage(double scale) async {
+    if (scale == 1.0) return this;
+    final bytes = await toPngBytes();
+    if (bytes == null) return null;
+    final codec = await ui.instantiateImageCodec(
+      bytes,
+      targetWidth: (width * scale).toInt(),
+      targetHeight: (height * scale).toInt(),
+    );
+    final frameInfo = await codec.getNextFrame();
+    final scaleImage = frameInfo.image;
+    return scaleImage;
+  }
+
+  Future<Uint8List?> toPngBytes() {
+    return toByteData(format: ui.ImageByteFormat.png)
+        .then((value) => value?.buffer.asUint8List());
   }
 }
