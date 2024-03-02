@@ -1,3 +1,7 @@
+## 0.0.6
+
+* Update API doc
+
 ## 0.0.5
 
 * Update scale takeScreenshot

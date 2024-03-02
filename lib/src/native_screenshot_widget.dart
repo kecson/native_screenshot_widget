@@ -5,19 +5,22 @@ import 'package:ff_native_screenshot/ff_native_screenshot.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+/// The Widget that can take Screenshot. Support PlatformView, also Android an iOS.
 class NativeScreenshot extends SingleChildRenderObjectWidget {
   const NativeScreenshot({
     Key? key,
     required Widget child,
     this.controller,
   }) : super(key: key, child: child);
+
   final NativeScreenshotController? controller;
 
   @override
   RenderProxyBox createRenderObject(BuildContext context) {
     var proxyBox = RenderProxyBox();
     controller?._renderObject = proxyBox;
-    controller?._devicePixelRatio = View.of(context).devicePixelRatio;
+    controller?._devicePixelRatio =
+        MediaQuery.maybeDevicePixelRatioOf(context) ?? View.of(context).devicePixelRatio;
     return proxyBox;
   }
 
@@ -28,19 +31,26 @@ class NativeScreenshot extends SingleChildRenderObjectWidget {
   ) {
     super.updateRenderObject(context, renderObject);
     controller?._renderObject = renderObject;
-    controller?._devicePixelRatio = View.of(context).devicePixelRatio;
+    controller?._devicePixelRatio =
+        MediaQuery.maybeDevicePixelRatioOf(context) ?? View.of(context).devicePixelRatio;
   }
 }
 
+/// [NativeScreenshot] take screenshot controller.
 class NativeScreenshotController {
   RenderBox? _renderObject;
   double _devicePixelRatio = 1.0;
 
+  /// Get RenderObject screenshot to Bytes.
+  ///
+  ///*[scale] scale image. default is 1.0
   Future<Uint8List?> takeScreenshot({double scale = 1.0}) {
-    return takeScreenshotImage(scale: scale)
-        .then((image) => image?.toPngBytes());
+    return takeScreenshotImage(scale: scale).then((image) => image?.toPngBytes());
   }
 
+  /// Get RenderObject screenshot to Image.
+  ///
+  ///*[scale] scale image. default is 1.0
   Future<ui.Image?> takeScreenshotImage({double scale = 1.0}) async {
     if (_renderObject == null ||
         _renderObject?.hasSize != true ||
@@ -80,7 +90,10 @@ class NativeScreenshotController {
   }
 }
 
-extension NativeScreenshotImageScale on ui.Image {
+extension ScreenshotImageExtension on ui.Image {
+  /// Image scale.
+  ///
+  ///*[scale] scale image.
   Future<ui.Image?> scaleImage(double scale) async {
     if (scale == 1.0) return this;
     final bytes = await toPngBytes();
@@ -95,8 +108,8 @@ extension NativeScreenshotImageScale on ui.Image {
     return scaleImage;
   }
 
+  /// Image to png bytes
   Future<Uint8List?> toPngBytes() {
-    return toByteData(format: ui.ImageByteFormat.png)
-        .then((value) => value?.buffer.asUint8List());
+    return toByteData(format: ui.ImageByteFormat.png).then((value) => value?.buffer.asUint8List());
   }
 }
