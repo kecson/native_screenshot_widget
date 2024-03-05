@@ -1,26 +1,26 @@
 PODS:
-  - ff_native_screenshot (0.0.1):
-    - Flutter
   - Flutter (1.0.0)
+  - native_screenshot_widget (0.0.1):
+    - Flutter
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
 
 DEPENDENCIES:
-  - ff_native_screenshot (from `.symlinks/plugins/ff_native_screenshot/ios`)
   - Flutter (from `Flutter`)
+  - native_screenshot_widget (from `.symlinks/plugins/native_screenshot_widget/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
 
 EXTERNAL SOURCES:
-  ff_native_screenshot:
-    :path: ".symlinks/plugins/ff_native_screenshot/ios"
   Flutter:
     :path: Flutter
+  native_screenshot_widget:
+    :path: ".symlinks/plugins/native_screenshot_widget/ios"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
-  ff_native_screenshot: 7cf56daa930d97daf16e732a27f5e9409e04548c
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  native_screenshot_widget: fd4ad1042bf61cf445a79803800ba4eca26483f5
   webview_flutter_wkwebview: be0f0d33777f1bfd0c9fdcb594786704dbf65f36
 
 PODFILE CHECKSUM: 6e700dec67e6deac9b1c69bb14c49a2217a12d15

@@ -90,35 +90,45 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           const Text("Flutter Widget:"),
           Expanded(
-            child: NativeScreenshot(
-              controller: flutterWidgetScreenshotController,
-              child: Container(
-                color: Colors.grey.shade300,
-                width: double.infinity,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 24),
-                      Text(
-                        "Flutter Widget",
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      Container(
-                        width: 100,
-                        height: 100,
-                        color: Colors.blue,
-                      ),
-                      const SizedBox(height: 16),
-                      ClipOval(
-                        child: Container(
+            child: Container(
+              margin: const EdgeInsets.all(8),
+              child: NativeScreenshot(
+                controller: flutterWidgetScreenshotController,
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                            height: 1,
+                            width: double.infinity,
+                            color: Colors.red),
+                        const SizedBox(height: 24),
+                        Text(
+                          "Flutter Widget",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        Container(
                           width: 100,
                           height: 100,
-                          color: Colors.red,
+                          color: Colors.blue,
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 16),
+                        ClipOval(
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -139,6 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
       0.1,
     ].map((scale) async {
       final bytes = await screenshotController.takeScreenshot(scale: scale);
+      if (bytes != null) {}
       return MapEntry('Scale $scale', bytes);
     })))
         .where((e) => e.value != null);

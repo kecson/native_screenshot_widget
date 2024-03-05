@@ -1,9 +1,10 @@
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
-import 'package:ff_native_screenshot/ff_native_screenshot.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+
+import '../native_screenshot_widget_platform_interface.dart';
 
 /// The Widget that can take Screenshot. Support PlatformView, also Android an iOS.
 class NativeScreenshot extends SingleChildRenderObjectWidget {
@@ -20,7 +21,8 @@ class NativeScreenshot extends SingleChildRenderObjectWidget {
     var proxyBox = RenderProxyBox();
     controller?._renderObject = proxyBox;
     controller?._devicePixelRatio =
-        MediaQuery.maybeDevicePixelRatioOf(context) ?? View.of(context).devicePixelRatio;
+        MediaQuery.maybeDevicePixelRatioOf(context) ??
+            View.of(context).devicePixelRatio;
     return proxyBox;
   }
 
@@ -32,7 +34,8 @@ class NativeScreenshot extends SingleChildRenderObjectWidget {
     super.updateRenderObject(context, renderObject);
     controller?._renderObject = renderObject;
     controller?._devicePixelRatio =
-        MediaQuery.maybeDevicePixelRatioOf(context) ?? View.of(context).devicePixelRatio;
+        MediaQuery.maybeDevicePixelRatioOf(context) ??
+            View.of(context).devicePixelRatio;
   }
 }
 
@@ -45,7 +48,8 @@ class NativeScreenshotController {
   ///
   ///*[scale] scale image. default is 1.0
   Future<Uint8List?> takeScreenshot({double scale = 1.0}) {
-    return takeScreenshotImage(scale: scale).then((image) => image?.toPngBytes());
+    return takeScreenshotImage(scale: scale)
+        .then((image) => image?.toPngBytes());
   }
 
   /// Get RenderObject screenshot to Image.
@@ -60,7 +64,9 @@ class NativeScreenshotController {
 
     final offset = _renderObject!.localToGlobal(Offset.zero);
     final size = _renderObject!.size;
-    return FfNativeScreenshot().takeScreenshot().then((bytes) async {
+    return NativeScreenshotWidgetPlatform.instance
+        .takeScreenshot()
+        .then((bytes) async {
       if (bytes != null) {
         final image = await decodeImageFromList(bytes);
         final dst = Rect.fromLTWH(
@@ -110,6 +116,7 @@ extension ScreenshotImageExtension on ui.Image {
 
   /// Image to png bytes
   Future<Uint8List?> toPngBytes() {
-    return toByteData(format: ui.ImageByteFormat.png).then((value) => value?.buffer.asUint8List());
+    return toByteData(format: ui.ImageByteFormat.png)
+        .then((value) => value?.buffer.asUint8List());
   }
 }

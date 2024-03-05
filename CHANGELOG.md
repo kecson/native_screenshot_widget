@@ -1,3 +1,7 @@
+## 0.0.7
+
+* Fix Android takeScreenshot
+
 ## 0.0.6
 
 * Update API doc
