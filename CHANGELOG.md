@@ -1,3 +1,7 @@
+## 0.0.8
+
+* Fix takeScreenshot catchError
+
 ## 0.0.7
 
 * Fix Android takeScreenshot
