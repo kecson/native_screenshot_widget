@@ -1,6 +1,6 @@
 # native_screenshot_widget
 
-[![pub package](https://img.shields.io/pub/v/native_screenshot_widget.svg)](https://pub.dev/packages/native_screenshot_widget)
+[![pub package](https://img.shields.io/pub/v/native_screenshot_widget.svg)](https://pub.dev/packages/native_screenshot_widget) | [![pub points](https://img.shields.io/pub/points/native_screenshot_widget)](https://pub.dev/packages/native_screenshot_widget/score) | [![popularity](https://img.shields.io/pub/popularity/native_screenshot_widget)](https://pub.dev/packages/native_screenshot_widget/score)
 
 ## Using
 
