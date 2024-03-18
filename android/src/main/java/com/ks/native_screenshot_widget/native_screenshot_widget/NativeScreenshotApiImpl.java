@@ -1,3 +1,4 @@
+
 package com.ks.native_screenshot_widget.native_screenshot_widget;
 
 import android.app.Activity;
@@ -45,10 +46,9 @@ public class NativeScreenshotApiImpl implements GeneratedNativeScreenshotApis.Sc
             final Bitmap bitmap;
             try {
                 if (Build.VERSION.SDK_INT >= 26) {
-                    bitmap = Bitmap.createBitmap(surfaceView.getWidth(), surfaceView.getHeight(), Bitmap.Config.ARGB_8888);
-                    int[] location = new int[2];
-                    surfaceView.getLocationInWindow(location);
-                    PixelCopy.request(surfaceView, new Rect(location[0], location[1], location[0] + surfaceView.getWidth(), location[1] + surfaceView.getHeight()), bitmap, (PixelCopy.OnPixelCopyFinishedListener) (it -> {
+                    Rect surfaceFrame = surfaceView.getHolder().getSurfaceFrame();
+                    bitmap = Bitmap.createBitmap(surfaceFrame.width(), surfaceFrame.height(), Bitmap.Config.ARGB_8888);
+                    PixelCopy.request(surfaceView, surfaceFrame, bitmap, (PixelCopy.OnPixelCopyFinishedListener) (it -> {
                         if (it == 0) {
                             takeScreenshotResult(bitmap, result);
                         } else {
@@ -113,3 +113,4 @@ public class NativeScreenshotApiImpl implements GeneratedNativeScreenshotApis.Sc
         void onView(View view);
     }
 }
+
